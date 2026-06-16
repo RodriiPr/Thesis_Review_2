@@ -1,0 +1,417 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+enum Role {
+  STUDENT
+  ADVISOR
+  COORDINATOR
+  ADMIN
+}
+
+enum AdvanceStatus {
+  PENDING
+  AI_PROCESSING
+  AI_COMPLETE
+  HUMAN_REVIEW
+  OBSERVED
+  APPROVED
+  REJECTED
+}
+
+enum FindingSeverity {
+  CRITICAL
+  MAJOR
+  MINOR
+  SUGGESTION
+}
+
+model User {
+  id            String              @id @default(cuid())
+  email         String              @unique
+  passwordHash  String
+  name          String
+  orcidManual   String?
+  role          Role
+  programId     String?
+  program       Program?            @relation(fields: [programId], references: [id])
+  advisees      User[]              @relation("AdvisorStudents")
+  advisor       User?               @relation("AdvisorStudents", fields: [advisorId], references: [id])
+  advisorId     String?
+  advances      Advance[]
+  reviews       Review[]
+  refreshTokens RefreshToken[]
+  passwordReset PasswordResetToken?
+  createdAt     DateTime            @default(now())
+  notifications Notification[]
+
+  orcidProfile     OrcidProfile?
+  documentSchemas  DocumentSchema[]
+  @@map("users")
+}
+
+model OrcidProfile {
+  id              String             @id @default(cuid())
+  userId          String             @unique
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orcidId         String             @unique
+  accessToken     String
+  refreshToken    String?
+  tokenExpiresAt  DateTime?
+  linkedAt        DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  publications    OrcidPublication[]
+
+  @@map("orcid_profiles")
+}
+
+model OrcidPublication {
+  id             String       @id @default(cuid())
+  orcidProfileId String
+  orcidProfile   OrcidProfile @relation(fields: [orcidProfileId], references: [id], onDelete: Cascade)
+  putCode        Int
+  title          String
+  doi            String?
+  journal        String?
+  year           Int?
+  authors        Json         @default("[]")
+  abstract       String?
+  url            String?
+  createdAt      DateTime     @default(now())
+
+  @@unique([orcidProfileId, putCode])
+  @@index([orcidProfileId])
+  @@map("orcid_publications")
+}
+
+model Program {
+  id        String           @id @default(cuid())
+  name      String
+  users     User[]
+  templates ThesisTemplate[]
+  advances  Advance[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("programs")
+}
+
+model ThesisTemplate {
+  id              String          @id @default(cuid())
+  programId       String
+  program         Program         @relation(fields: [programId], references: [id])
+  name            String
+  version         String
+  fileKey         String
+  extractedSchema Json
+  rubric          Json
+  isActive        Boolean         @default(true)
+  chunks          TemplateChunk[]
+  advances        Advance[]
+  createdAt       DateTime        @default(now())
+
+  @@map("thesis_templates")
+}
+
+model TemplateChunk {
+  id          String         @id @default(cuid())
+  templateId  String
+  template    ThesisTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  sectionName String
+  content     String
+  chunkIndex  Int
+
+  @@map("template_chunks")
+}
+
+model Advance {
+  id                   String                @id @default(cuid())
+  studentId            String
+  student              User                  @relation(fields: [studentId], references: [id])
+  programId            String
+  program              Program               @relation(fields: [programId], references: [id])
+  templateId           String
+  template             ThesisTemplate        @relation(fields: [templateId], references: [id])
+  title                String
+  advanceType          String
+  version              Int                   @default(1)
+  fileKey              String
+  fileType             String
+  fileSizeBytes        Int
+  pageCount            Int?
+  status               AdvanceStatus         @default(PENDING)
+  aiAnalysis           AIAnalysis?
+  review               Review?
+  chunks               AdvanceChunk[]
+  plagiarismReport     PlagiarismReport?
+  referenceValidations ReferenceValidation[]
+  plagiarismAlerts     PlagiarismAlert[]     @relation("PlagiarismAlertTarget")
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  @@index([studentId])
+  @@index([programId, status])
+  @@map("advances")
+}
+
+model AIAnalysis {
+  id               String      @id @default(cuid())
+  advanceId        String      @unique
+  advance          Advance     @relation(fields: [advanceId], references: [id], onDelete: Cascade)
+  structureScore   Float
+  contentScore     Float
+  formScore        Float
+  originalityScore Float
+  overallScore     Float
+  gradeConverted   Float
+  executiveSummary String
+  findings         AIFinding[]
+  processingMs     Int
+  modelUsed        String
+  createdAt        DateTime    @default(now())
+
+  @@map("ai_analyses")
+}
+
+model AIFinding {
+  id                 String          @id @default(cuid())
+  analysisId         String
+  analysis           AIAnalysis      @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+  sectionRef         String
+  pageRef            Int?
+  severity           FindingSeverity
+  description        String
+  correctionSteps    String
+  exampleImprovement String
+  recommendation     String
+  humanAccepted      Boolean?
+  humanComment       String?
+  createdAt          DateTime        @default(now())
+
+  @@map("ai_findings")
+}
+
+model Review {
+  id            String        @id @default(cuid())
+  advanceId     String        @unique
+  advance       Advance       @relation(fields: [advanceId], references: [id], onDelete: Cascade)
+  reviewerId    String
+  reviewer      User          @relation(fields: [reviewerId], references: [id])
+  finalGrade    Float?
+  humanComment  String?
+  rubricAnswers Json          @default("{}")
+  status        AdvanceStatus
+  reviewedAt    DateTime?
+  createdAt     DateTime      @default(now())
+
+  @@map("reviews")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ipAddress String?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@map("password_reset_tokens")
+}
+
+model AdvanceChunk {
+  id          String                       @id @default(cuid())
+  advanceId   String
+  advance     Advance                      @relation(fields: [advanceId], references: [id], onDelete: Cascade)
+  programId   String
+  sectionName String
+  content     String
+  chunkIndex  Int
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime                     @default(now())
+
+  @@index([advanceId])
+  @@index([programId])
+  @@map("advance_chunks")
+}
+
+model PlagiarismReport {
+  id           String            @id @default(cuid())
+  advanceId    String            @unique
+  advance      Advance           @relation(fields: [advanceId], references: [id], onDelete: Cascade)
+  status       String            @default("pending")
+  overallScore Float             @default(0)
+  method       String
+  alerts       PlagiarismAlert[]
+  analyzedAt   DateTime?
+  createdAt    DateTime          @default(now())
+
+  @@map("plagiarism_reports")
+}
+
+model PlagiarismAlert {
+  id              String           @id @default(cuid())
+  reportId        String
+  report          PlagiarismReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  sectionName     String
+  similarity      Float
+  severity        String
+  sourceSnippet   String?
+  targetSnippet   String?
+  targetAdvanceId String?
+  targetAdvance   Advance?         @relation("PlagiarismAlertTarget", fields: [targetAdvanceId], references: [id])
+  createdAt       DateTime         @default(now())
+
+  @@map("plagiarism_alerts")
+}
+
+model ReferenceValidation {
+  id           String   @id @default(cuid())
+  advanceId    String
+  advance      Advance  @relation(fields: [advanceId], references: [id], onDelete: Cascade)
+  rawText      String
+  title        String?
+  authors      String?
+  year         Int?
+  doi          String?
+  journal      String?
+  status       String
+  suggestion   String?
+  crossrefData Json?
+  createdAt    DateTime @default(now())
+
+  @@index([advanceId])
+  @@map("reference_validations")
+}
+
+enum ThesisDocumentStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+enum DocumentSchemaType {
+  THESIS_PROJECT
+  SCIENTIFIC_ARTICLE
+  THESIS
+  THESIS_REPORT
+}
+
+model DocumentSchema {
+  id              String   @id @default(cuid())
+  name            String
+  type            DocumentSchemaType
+  description     String?
+  structure       Json
+  version         Int      @default(1)
+  isDefault       Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  createdById     String
+  createdBy       User     @relation(fields: [createdById], references: [id])
+  documents       ThesisDocument[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([type])
+  @@index([isActive])
+  @@index([isDefault])
+  @@map("document_schemas")
+}
+
+model ThesisDocument {
+  id             String               @id @default(cuid())
+  title          String
+  authors        String[]
+  advisor        String
+  lineOfResearch String
+  city           String
+  year           Int
+  documentType   DocumentSchemaType
+  status         ThesisDocumentStatus @default(PENDING)
+  outputFormats  String[]
+  pdfKey         String?
+  docxKey        String?
+  metadata       Json?
+  userId         String
+  schemaId       String?
+  schema         DocumentSchema?      @relation(fields: [schemaId], references: [id])
+  sourceFileKey  String?
+  sourceFileName String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([schemaId])
+  @@map("thesis_documents")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // 'review_complete' | 'ai_complete' | 'ai_failed'
+  title     String
+  message   String
+  advanceId String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+model ProjectDocumentation {
+  id         String                       @id @default(cuid())
+  title      String
+  content    String                       @db.Text
+  source     String                       // "architecture" | "code" | "thesis" | "readme" | "prompt"
+  module     String?                      // Para código: "advances", "auth", etc.
+  chunkIndex Int
+  parentId   String?                      // Para agrupar chunks del mismo documento
+  embedding  Unsupported("vector(1536)")?
+  createdAt  DateTime                     @default(now())
+
+  @@index([source])
+  @@index([module])
+  @@map("project_documentation")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}

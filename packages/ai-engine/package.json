@@ -1,0 +1,28 @@
+{
+  "name": "@thesis-review/ai-engine",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@langchain/deepseek": "^1.0.27",
+    "@langchain/openai": "^0.5.10",
+    "langchain": "^0.3.24",
+    "mammoth": "^1.9.0",
+    "pdf-parse": "^1.1.1",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/pdf-parse": "^1.1.4"
+  }
+}

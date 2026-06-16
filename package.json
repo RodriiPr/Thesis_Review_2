@@ -1,0 +1,28 @@
+{
+  "name": "thesis-review",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "db:generate": "pnpm --filter @thesis-review/database db:generate",
+    "db:migrate": "pnpm --filter @thesis-review/database db:migrate",
+    "db:push": "pnpm --filter @thesis-review/database db:push",
+    "db:studio": "pnpm --filter @thesis-review/database db:studio",
+    "db:seed": "pnpm --filter @thesis-review/database db:seed",
+    "kb:ingest": "tsx scripts/ingest-knowledge.ts",
+    "postinstall": "pnpm db:generate"
+  },
+  "devDependencies": {
+    "@thesis-review/ai-engine": "workspace:*",
+    "@thesis-review/database": "workspace:*",
+    "tsx": "^4.19.4",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {},
+}

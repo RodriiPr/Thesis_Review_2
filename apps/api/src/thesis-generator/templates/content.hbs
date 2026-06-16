@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    size: letter;
+    margin-top: 2.5cm;
+    margin-bottom: 2.5cm;
+    margin-left: 3cm;
+    margin-right: 2.5cm;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-size: 12pt;
+    color: #000;
+    line-height: 1.5;
+    text-align: justify;
+    counter-reset: page-counter;
+  }
+  .page { page-break-after: always; }
+  .caratula-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 3cm;
+  }
+  .cover-logo { margin-bottom: 20px; }
+  .cover-university {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .cover-faculty {
+    font-size: 12pt;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .cover-divider {
+    width: 60%;
+    height: 2px;
+    background: #000;
+    margin: 20px auto;
+  }
+  .cover-title {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0;
+    line-height: 1.4;
+  }
+  .cover-type {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    text-transform: uppercase;
+  }
+  .cover-authors {
+    font-size: 12pt;
+    text-align: center;
+    margin: 15px 0;
+  }
+  .cover-advisor {
+    font-size: 11pt;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .cover-line {
+    font-size: 11pt;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .cover-bottom {
+    font-size: 11pt;
+    text-align: center;
+    margin-top: auto;
+    padding-bottom: 2cm;
+  }
+  h1.chapter-title {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    page-break-before: always;
+  }
+  .index-title {
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #000;
+    margin: 0 8px;
+    height: 1em;
+  }
+  .toc-page { text-align: right; min-width: 30px; }
+  .toc-indent-1 { padding-left: 20px; }
+  .toc-indent-2 { padding-left: 40px; }
+  .references-list { list-style: none; padding-left: 0; }
+  .references-list li {
+    padding-left: 1.27cm;
+    text-indent: -1.27cm;
+    margin-bottom: 12px;
+    text-align: justify;
+  }
+  .annex-tree {
+    font-family: 'Courier New', monospace;
+    font-size: 10pt;
+    line-height: 1.6;
+    white-space: pre;
+    margin: 20px 0;
+  }
+  .chapter-text { margin-bottom: 12px; }
+  .bibliography-section h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .page-number {
+    position: fixed;
+    bottom: 1cm;
+    right: 2.5cm;
+    font-size: 10pt;
+  }
+  .page-break { page-break-before: always; }
+  table.jury-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  .jury-table td { padding: 12px 8px; border-bottom: 1px solid #ccc; }
+  .jury-label { font-weight: bold; width: 120px; }
+  .jury-name { width: 200px; }
+  .jury-signature { text-align: center; min-width: 180px; font-size: 10pt; }
+  .signature-area { text-align: center; margin-top: 40px; }
+  .signature-line { width: 250px; border-top: 1px solid #000; margin: 0 auto 8px; }
+  .signature-label { font-size: 11pt; }
+  .declaration-list { margin-left: 30px; }
+  .declaration-list li { margin-bottom: 8px; }
+  .date-city { text-align: right; font-style: italic; }
+  .annex-title { font-size: 13pt; font-weight: bold; text-align: center; margin: 30px 0 20px; }
+  .intro-content p { margin-bottom: 12px; text-indent: 1.27cm; }
+</style>
+</head>
+<body>
+{{{content}}}
+</body>
+</html>
