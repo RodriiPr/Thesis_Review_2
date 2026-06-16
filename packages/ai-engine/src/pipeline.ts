@@ -100,7 +100,7 @@ export class AnalysisPipeline {
       const llm = await createLlm(this.provider, 0.2, 2048);
       const prompt = buildAnalysisPrompt(advanceText, templateSchema, templateText, advanceType);
       const response = await llm.invoke(prompt);
-      const content = typeof response.content === 'string' ? response.content : JSON.stringify(response.content);
+      const content = typeof response === 'string' ? response : (response as any).content || JSON.stringify(response);
 
       const parsed = parseJsonResponse<{
         scores: { structure: number; content: number; form: number; originality: number };
@@ -169,7 +169,7 @@ export class AnalysisPipeline {
       const llm = await createLlm(this.provider, 0, 2048);
       const prompt = buildReferenceExtractionPrompt(text);
       const response = await llm.invoke(prompt);
-      const content = typeof response.content === 'string' ? response.content : '';
+      const content = typeof response === 'string' ? response : (response as any).content || '';
       const parsed = parseJsonResponse<Array<{
         rawText: string;
         title: string;

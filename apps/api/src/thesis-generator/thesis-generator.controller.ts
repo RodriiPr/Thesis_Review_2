@@ -13,6 +13,7 @@ import {
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Response } from 'express';
+import type { Response as ExpressResponse } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ThesisGeneratorService } from './thesis-generator.service';
 import { GenerateThesisDto } from './dto/generate-thesis.dto';
@@ -45,7 +46,7 @@ export class ThesisGeneratorController {
   async download(
     @Param('id') id: string,
     @Param('format') format: 'pdf' | 'docx',
-    @Res() res: Response,
+    @Res() res: ExpressResponse,
   ) {
     const { buffer, contentType } = await this.service.getFile(id, format);
     res.setHeader('Content-Type', contentType);

@@ -29,5 +29,6 @@ export interface AnalysisResult {
 export interface PipelineOptions {
   deepseekKey?: string;
   deepseekModel?: string;
+  ollamaModel?: string;
   maxGrade?: number;
 }

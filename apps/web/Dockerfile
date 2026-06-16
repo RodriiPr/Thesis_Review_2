@@ -5,6 +5,8 @@ WORKDIR /app
 FROM base AS deps
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
 COPY apps/web/package.json ./apps/web/
+COPY packages/ai-engine/package.json ./packages/ai-engine/
+COPY packages/database/package.json ./packages/database/
 RUN pnpm install --ignore-scripts --filter @thesis-review/web...
 
 FROM base AS builder
