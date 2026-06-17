@@ -1,5 +1,6 @@
-import { Controller, Post, Get, Param, UploadedFile, UseInterceptors, Body, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Post, Get, Param, UploadedFile, UseInterceptors, Body, Res } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import type { Response } from 'express';
 import { TemplateDocumentService } from './template-document.service';
 import { GenerateFromTemplateDto } from './dto/generate-from-template.dto';
 
@@ -22,5 +23,12 @@ export class TemplateDocumentController {
   @Get(':id/download')
   async download(@Param('id') id: string) {
     return { url: await this.templateDocumentService.getDownloadUrl(id) };
+  }
+
+  @Get(':id/preview')
+  async preview(@Param('id') id: string, @Res() res: Response) {
+    const html = await this.templateDocumentService.getPreviewHtml(id);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
   }
 }

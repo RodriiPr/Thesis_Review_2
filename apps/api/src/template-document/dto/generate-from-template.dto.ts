@@ -37,6 +37,10 @@ export class GenerateFromTemplateDto {
 
   @IsOptional()
   @IsString()
+  lineOfResearch?: string;
+
+  @IsOptional()
+  @IsString()
   year?: string;
 
   @IsOptional()

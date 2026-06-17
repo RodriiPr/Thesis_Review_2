@@ -15,6 +15,7 @@ COPY apps/web ./apps/web
 COPY packages ./packages
 COPY package.json pnpm-workspace.yaml turbo.json ./
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_STANDALONE=true
 RUN pnpm --filter @thesis-review/web build
 
 FROM node:22-alpine AS runner

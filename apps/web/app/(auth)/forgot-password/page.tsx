@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="usuario@universidad.edu.pe"
+                placeholder="usuario@unitru.edu.pe"
                 className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm mb-4"
               />
               <button

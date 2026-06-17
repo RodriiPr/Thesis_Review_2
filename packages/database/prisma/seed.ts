@@ -28,20 +28,20 @@ async function main() {
 
   const [, , advisor1, , student1] = await Promise.all([
     prisma.user.upsert({
-      where: { email: 'admin@universidad.edu.pe' },
+      where: { email: 'admin@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'admin@universidad.edu.pe',
+        email: 'admin@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Administrador Sistema',
         role: 'ADMIN',
       },
     }),
     prisma.user.upsert({
-      where: { email: 'coordinadora@universidad.edu.pe' },
+      where: { email: 'coordinadora@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'coordinadora@universidad.edu.pe',
+        email: 'coordinadora@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'María Castillo Vega',
         role: 'COORDINATOR',
@@ -49,10 +49,10 @@ async function main() {
       },
     }),
     prisma.user.upsert({
-      where: { email: 'jperez@universidad.edu.pe' },
+      where: { email: 'jperez@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'jperez@universidad.edu.pe',
+        email: 'jperez@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Dr. Jorge Pérez Sánchez',
         role: 'ADVISOR',
@@ -60,10 +60,10 @@ async function main() {
       },
     }),
     prisma.user.upsert({
-      where: { email: 'dsalinas@universidad.edu.pe' },
+      where: { email: 'dsalinas@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'dsalinas@universidad.edu.pe',
+        email: 'dsalinas@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Dra. Diana Salinas Roque',
         role: 'ADVISOR',
@@ -71,10 +71,10 @@ async function main() {
       },
     }),
     prisma.user.upsert({
-      where: { email: 'ktorres@estudiante.edu.pe' },
+      where: { email: 'ktorres@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'ktorres@estudiante.edu.pe',
+        email: 'ktorres@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Torres Mendoza, Karla',
         role: 'STUDENT',
@@ -82,10 +82,10 @@ async function main() {
       },
     }),
     prisma.user.upsert({
-      where: { email: 'jrivera@estudiante.edu.pe' },
+      where: { email: 'jrivera@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'jrivera@estudiante.edu.pe',
+        email: 'jrivera@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Rivera Salas, Juan',
         role: 'STUDENT',
@@ -93,10 +93,10 @@ async function main() {
       },
     }),
     prisma.user.upsert({
-      where: { email: 'scampos@estudiante.edu.pe' },
+      where: { email: 'scampos@unitru.edu.pe' },
       update: {},
       create: {
-        email: 'scampos@estudiante.edu.pe',
+        email: 'scampos@unitru.edu.pe',
         passwordHash: hashedPassword,
         name: 'Campos Vera, Sandra',
         role: 'STUDENT',
@@ -198,10 +198,10 @@ async function main() {
 
   console.log('✓ Seed completado');
   console.log('\nCredenciales (contraseña: ThesisReview2025!):');
-  console.log('  Administrador: admin@universidad.edu.pe');
-  console.log('  Coordinador: coordinadora@universidad.edu.pe');
-  console.log('  Asesor:      jperez@universidad.edu.pe');
-  console.log('  Estudiante:  ktorres@estudiante.edu.pe');
+  console.log('  Administrador: admin@unitru.edu.pe');
+  console.log('  Coordinador: coordinadora@unitru.edu.pe');
+  console.log('  Asesor:      jperez@unitru.edu.pe');
+  console.log('  Estudiante:  ktorres@unitru.edu.pe');
 }
 
 main()

@@ -39,7 +39,7 @@ export class PdfGenerator {
     // En el monorepo compilado, este archivo se ubica en:
     // dist/apps/api/src/thesis-generator/utils/pdf-generator.js
     // Los templates están en: dist/apps/api/src/thesis-generator/templates/
-    const templatesDir = join(process.cwd(), 'apps', 'api', 'src', 'thesis-generator', 'templates');
+    const templatesDir = join(__dirname, '..', 'templates');
 
     this.coverTemplate = Handlebars.compile(
       readFileSync(join(templatesDir, 'cover.hbs'), 'utf-8'),

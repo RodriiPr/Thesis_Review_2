@@ -96,7 +96,7 @@ function UserForm({
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             className="w-full h-9 rounded-lg border border-gray-200 px-3 text-sm"
-            placeholder="usuario@universidad.edu.pe"
+            placeholder="usuario@unitru.edu.pe"
           />
         </div>
         <div>

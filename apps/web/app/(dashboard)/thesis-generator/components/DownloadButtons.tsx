@@ -10,7 +10,9 @@ export default function DownloadButtons({ downloadUrls }: Props) {
   if (Object.keys(downloadUrls).length === 0) return null;
 
   const handleDownload = (url: string) => {
-    window.open(url, '_blank');
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
+    const downloadUrl = token ? `${url}?token=${token}` : url;
+    window.open(downloadUrl, '_blank');
   };
 
   return (

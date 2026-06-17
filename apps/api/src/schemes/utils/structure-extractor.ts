@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { extractText } from '../../../../../packages/ai-engine/src/extractor';
+import { extractText } from '@thesis-review/ai-engine';
+
 
 @Injectable()
 export class StructureExtractor {

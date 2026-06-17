@@ -57,7 +57,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="usuario@universidad.edu.pe"
+                placeholder="usuario@unitru.edu.pe"
                 className="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#185FA5]/20 focus:border-[#185FA5]"
                 onKeyDown={(e) =>
                   e.key === 'Enter' && loginMutation.mutate({ email, password })
@@ -109,9 +109,9 @@ export default function LoginPage() {
         <div className="mt-4 p-3 bg-blue-50 rounded-xl border border-blue-100">
           <p className="text-xs font-medium text-blue-800 mb-1">Credenciales de prueba:</p>
           <div className="space-y-0.5 text-xs text-blue-700">
-            <div>Coordinador: coordinadora@universidad.edu.pe</div>
-            <div>Asesor: jperez@universidad.edu.pe</div>
-            <div>Estudiante: ktorres@estudiante.edu.pe</div>
+            <div>Coordinador: coordinadora@unitru.edu.pe</div>
+            <div>Asesor: jperez@unitru.edu.pe</div>
+            <div>Estudiante: ktorres@unitru.edu.pe</div>
             <div>Contraseña: ThesisReview2025!</div>
           </div>
         </div>

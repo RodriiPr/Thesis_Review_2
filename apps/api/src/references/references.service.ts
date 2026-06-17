@@ -220,7 +220,7 @@ export class ReferencesService {
 
   private async fetchCrossRefByDoi(doi: string): Promise<CrossRefWork | null> {
     const url = `${CROSSREF_BASE}/${encodeURIComponent(doi)}`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'ThesisReview/1.0 (mailto:admin@universidad.edu.pe)' } });
+    const res = await fetch(url, { headers: { 'User-Agent': 'ThesisReview/1.0 (mailto:admin@unitru.edu.pe)' } });
     if (!res.ok) return null;
     const json = await res.json() as { message?: CrossRefWork };
     return json.message ?? null;
@@ -229,7 +229,7 @@ export class ReferencesService {
   private async fetchCrossRefByQuery(title: string): Promise<CrossRefWork | null> {
     const query = encodeURIComponent(title.substring(0, 200));
     const url = `${CROSSREF_BASE}?query=${query}&rows=1&select=DOI,title,author,published-print,container-title,score`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'ThesisReview/1.0 (mailto:admin@universidad.edu.pe)' } });
+    const res = await fetch(url, { headers: { 'User-Agent': 'ThesisReview/1.0 (mailto:admin@unitru.edu.pe)' } });
     if (!res.ok) return null;
     const json = await res.json() as { message?: { items?: CrossRefWork[] } };
     return json.message?.items?.[0] ?? null;

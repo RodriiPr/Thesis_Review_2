@@ -25,6 +25,9 @@ export default function DocumentPreview({ downloadUrls }: Props) {
     );
   }
 
+  const token = typeof window !== 'undefined' ? sessionStorage.getItem('accessToken') : null;
+  const previewUrl = token ? `${downloadUrls.pdf}?token=${token}#toolbar=1` : `${downloadUrls.pdf}#toolbar=1`;
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
@@ -32,7 +35,7 @@ export default function DocumentPreview({ downloadUrls }: Props) {
         <span className="text-sm font-medium text-gray-700">Vista Previa</span>
       </div>
       <iframe
-        src={`${downloadUrls.pdf}#toolbar=1`}
+        src={previewUrl}
         className="w-full h-[600px]"
         title="Vista previa del documento"
       />

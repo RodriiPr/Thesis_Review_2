@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      claude:
-        specifier: ^0.1.1
-        version: 0.1.2
     devDependencies:
       '@thesis-review/ai-engine':
         specifier: workspace:*
@@ -18,12 +14,6 @@ importers:
       '@thesis-review/database':
         specifier: workspace:*
         version: link:packages/database
-      langchain:
-        specifier: ^0.3.24
-        version: 0.3.37(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0))(@langchain/deepseek@1.0.27(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0))(ws@8.21.0))(@langchain/google-genai@2.1.31(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0)))(@langchain/ollama@0.2.4(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0)))(axios@1.16.1)(handlebars@4.7.9)(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0)
-      pdf-parse:
-        specifier: ^1.1.1
-        version: 1.1.4
       tsx:
         specifier: ^4.19.4
         version: 4.22.0
@@ -69,6 +59,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.21(@nestjs/common@11.1.21(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.21)
+      '@prisma/client':
+        specifier: ^6.19.3
+        version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
       '@thesis-review/ai-engine':
         specifier: workspace:*
         version: link:../../packages/ai-engine
@@ -145,9 +138,6 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.1
         version: 11.1.21(@nestjs/common@11.1.21(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.21)(@nestjs/platform-express@11.1.21)
-      '@prisma/client':
-        specifier: ^6.19.3
-        version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
@@ -254,6 +244,9 @@ importers:
       '@langchain/deepseek':
         specifier: ^1.0.27
         version: 1.0.27(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0))(ws@8.21.0)
+      '@langchain/ollama':
+        specifier: ^0.2.4
+        version: 0.2.4(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0))
       '@langchain/openai':
         specifier: ^0.5.10
         version: 0.5.18(@langchain/core@1.1.49(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(ws@8.21.0))(ws@8.21.0)
@@ -2117,10 +2110,6 @@ packages:
 
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
-
-  claude@0.1.2:
-    resolution: {integrity: sha512-Qjrrs+G1pwovbIgGh5R1Ni4Al79AfpbkvfonpHH0yj86cfOq3AoAzNbEeD9TQ980hrog8TM0vh1CNn+7uf/zYA==}
-    deprecated: The official Claude Code package is available at @anthropic-ai/claude-code
 
   cli-cursor@3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
@@ -6311,8 +6300,6 @@ snapshots:
   class-variance-authority@0.7.1:
     dependencies:
       clsx: 2.1.1
-
-  claude@0.1.2: {}
 
   cli-cursor@3.1.0:
     dependencies:
