@@ -49,18 +49,36 @@ docker compose up -d
 docker compose up seed
 ```
 
-### 4. Desarrollo Local (Opcional)
-Si prefieres ejecutar la web o api fuera de Docker para mayor velocidad de compilación:
+### 4. Desarrollo Local (Híbrido - Recomendado)
+Si prefieres ejecutar la web o la api fuera de Docker para mayor velocidad de compilación y facilidad de depuración, puedes levantar únicamente los servicios de infraestructura en Docker y correr las aplicaciones localmente con Node:
+
 ```bash
+# 1. Copiar archivo de entorno
+cp .env.example .env
+
+# 2. Instalar dependencias del monorepo
 pnpm install
+
+# 3. Levantar solo servicios de infraestructura (Postgres, Redis, MinIO)
+docker compose up postgres redis minio -d
+
+# 4. Correr migraciones e insertar seed de datos
+docker compose up seed
+
+# 5. Levantar aplicaciones en modo de desarrollo (Next.js + NestJS)
 pnpm dev
 ```
 
+### 🔐 Credenciales de Prueba (Seed)
+* **Administrador:** `admin@unitru.edu.pe`
+* **Contraseña:** `ThesisReview2025!`
+* *(Todos los usuarios de prueba usan el dominio `@unitru.edu.pe`)*
+
 ## 📝 Notas de Mantenimiento (Saneamiento Windows)
-Este proyecto ha sido migrado a `C:\thesis-review` para evitar errores de rutas con espacios o tildes. **No mover el proyecto a carpetas de usuario con caracteres especiales**, ya que puede romper los binds de volúmenes de Docker y el sistema de archivos de Node.js.
+Este proyecto está optimizado para ejecutarse en entornos Windows. Se recomienda no mover el proyecto a carpetas de usuario con caracteres especiales o espacios (ej: `C:\Users\Mi Usuario\Documents`), ya que puede romper los montajes de volumen de Docker y las dependencias de node_modules.
 
 ## 🗺️ Flujo de Generación
 1. **Ingesta:** El usuario sube la tesis/documento $\rightarrow$ `extractor.ts` procesa el texto.
-2. **Análisis:** El `AnalysisPipeline` evalúa el texto contra el esquema patrón utilizando Ollama 3.2.
+2. **Análisis:** El `AnalysisPipeline` evalúa el texto contra el esquema patrón utilizando Ollama o DeepSeek.
 3. **Corrección:** Se generan hallazgos estructurados (CRITICAL, MAJOR, MINOR) con pasos de corrección.
-4. **Transformación:** El motor puede convertir la tesis en un artículo científico o proyecto de tesis basado en los prompts definidos en `prompts.ts`.
+4. **Transformación:** El motor genera el documento final inyectando de forma coherente las variables (VI, VDs) y desglosando los apartados metodológicos de forma exacta según las etiquetas detectadas en la plantilla `.docx`.
