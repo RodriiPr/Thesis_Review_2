@@ -67,6 +67,10 @@ docker compose up seed
 
 # 5. Levantar aplicaciones en modo de desarrollo (Next.js + NestJS)
 pnpm dev
+
+# NOTA (COMPATIBILIDAD WINDOWS): Si tu ruta de usuario contiene espacios o caracteres especiales 
+# (ej: C:\Users\André Jhonel) y Turborepo falla al spawnear procesos, ejecuta:
+pnpm dev:safe
 ```
 
 ### 🔐 Credenciales de Prueba (Seed)

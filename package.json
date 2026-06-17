@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:safe": "node scripts/dev.js",
     "build": "turbo build",
     "lint": "turbo lint",
     "db:generate": "pnpm --filter @thesis-review/database db:generate",
